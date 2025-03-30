@@ -14,7 +14,7 @@ import java.time.Duration;
 
 @RequiredArgsConstructor
 @Component
-public class HttpApiClient {
+public class ApiClient {
 
     private final ObjectMapper objectMapper;
     private final WebClient.Builder webClientBuilder;

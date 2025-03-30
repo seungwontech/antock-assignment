@@ -16,7 +16,7 @@ public class BusinessJusoApi {
     @Value("${juso.open-api.service-key}")
     private String API_KEY;
 
-    private final HttpApiClient httpApiClient;
+    private final ApiClient apiClient;
 
     public PublicAddress getBusinessJusoData(String keyword) throws Exception {
         String url = BASE_URL + "1&countPerPage=1"
@@ -24,6 +24,6 @@ public class BusinessJusoApi {
                 + "&confmKey=" + API_KEY
                 + "&resultType=json";
 
-        return httpApiClient.get(url, PublicAddress.class);
+        return apiClient.get(url, PublicAddress.class);
     }
 }

@@ -16,13 +16,13 @@ public class PublicDataApi {
     @Value("${public-data.open-api.service-key}")
     private String API_KEY;
 
-    private final HttpApiClient httpApiClient;
+    private final ApiClient apiClient;
 
     public PublicData getPublicData(String brno) throws Exception {
         String url = BASE_URL
                 + "?serviceKey=" + URLEncoder.encode(API_KEY, "UTF-8")
                 + "&pageNo=1&numOfRows=1&resultType=json&brno=" + brno;
 
-        return httpApiClient.get(url, PublicData.class);
+        return apiClient.get(url, PublicData.class);
     }
 }
