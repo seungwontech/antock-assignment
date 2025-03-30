@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
 @Component
@@ -20,7 +21,7 @@ public class PublicDataApi {
 
     public PublicData getPublicData(String brno) throws Exception {
         String url = BASE_URL
-                + "?serviceKey=" + URLEncoder.encode(API_KEY, "UTF-8")
+                + "?serviceKey=" + URLEncoder.encode(API_KEY, StandardCharsets.UTF_8)
                 + "&pageNo=1&numOfRows=1&resultType=json&brno=" + brno;
 
         return apiClient.get(url, PublicData.class);

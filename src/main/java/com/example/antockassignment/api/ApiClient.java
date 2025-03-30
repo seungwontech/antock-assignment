@@ -20,14 +20,14 @@ public class ApiClient {
     private final WebClient.Builder webClientBuilder;
 
     public <T> T get(String urlString, Class<T> responseType) throws Exception {
-
+        System.out.println(urlString);
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(urlString);
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
 
         ReactorClientHttpConnector httpConnector = new ReactorClientHttpConnector(
                 HttpClient.create()
-                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
-                        .responseTimeout(Duration.ofSeconds(5)));
+                        .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000)
+                        .responseTimeout(Duration.ofSeconds(30)));
 
         WebClient webClient = webClientBuilder.uriBuilderFactory(factory)
                 .clientConnector(httpConnector)
