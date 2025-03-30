@@ -48,8 +48,7 @@ public class BusinessService {
 
                 PublicAddress publicAddress = null;
 
-                String addressToUse = data.lctnAddr().replaceAll(" ", "").isEmpty() ? publicData.items().get(0).lctnRnAddr() : data.lctnAddr();
-
+                String addressToUse = "".equals(data.lctnAddr().replaceAll(" ", "")) ? publicData.items().get(0).lctnRnAddr() : data.lctnAddr();
                 if (data.isLctnAddrNumeric()) {
                     addressToUse = publicData.items().get(0).lctnRnAddr();
                 }
@@ -57,14 +56,16 @@ public class BusinessService {
                 if (!"N/A".equals(addressToUse)) {
                     try {
                         publicAddress = businessJusoApi.getBusinessJusoData(addressToUse);
-                        if (publicAddress != null && publicAddress.results().common().totalCount() > 0) {
-                            admCd = publicAddress.results().juso().get(0).admCd();
-                        }
                     } catch (Exception e) {
                         throw new CoreException(ErrorType.JUSO_DATA_NOT_FOUND, e.getLocalizedMessage());
                     }
                 }
 
+                if (publicAddress != null && publicAddress.results() != null) {
+                    if (publicAddress.results().common().totalCount() > 0) {
+                        admCd = publicAddress.results().juso().get(0).admCd();
+                    }
+                }
                 Business businessInfo = Business.create(data.prmmiMnno(), data.bzmnNm(), data.brno(), crno, admCd);
                 businesses.offer(businessInfo);
             });
