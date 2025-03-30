@@ -1,4 +1,4 @@
-package com.example.antockassignment.business.entity;
+package com.example.antockassignment.business.domin.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
