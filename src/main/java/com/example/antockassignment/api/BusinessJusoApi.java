@@ -1,13 +1,10 @@
 package com.example.antockassignment.api;
 
 import com.example.antockassignment.api.dto.pubilcAddress.PublicAddress;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.net.URLEncoder;
 
 @RequiredArgsConstructor
