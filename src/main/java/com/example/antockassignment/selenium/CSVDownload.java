@@ -6,7 +6,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,7 +47,7 @@ public class CSVDownload {
 
             if (files != null && files.length > 0) {
                 File csvFile = files[0];
-                return new String(Files.readAllBytes(csvFile.toPath()), Charset.forName("CP949"));
+                return Files.readString(csvFile.toPath(), Charset.forName("CP949"));
             } else {
                 return "CSV 파일을 찾을 수 없습니다.";
             }
