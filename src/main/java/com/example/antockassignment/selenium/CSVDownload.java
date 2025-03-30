@@ -1,5 +1,7 @@
 package com.example.antockassignment.selenium;
 
+import com.example.antockassignment.config.exception.CoreException;
+import com.example.antockassignment.config.exception.ErrorType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -49,7 +51,7 @@ public class CSVDownload {
                 File csvFile = files[0];
                 return Files.readString(csvFile.toPath(), Charset.forName("CP949"));
             } else {
-                return "CSV 파일을 찾을 수 없습니다.";
+                throw new CoreException(ErrorType.CSV_FILE_NOT_FOUND, files);
             }
         } finally {
             driver.quit();

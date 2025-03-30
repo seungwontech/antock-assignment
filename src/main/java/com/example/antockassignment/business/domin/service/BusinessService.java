@@ -10,7 +10,6 @@ import com.example.antockassignment.api.dto.PublicData;
 import com.example.antockassignment.api.dto.pubilcAddress.PublicAddress;
 import com.example.antockassignment.business.domin.entity.Business;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.*;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class BusinessService {
@@ -44,8 +42,8 @@ public class BusinessService {
                     if (publicData != null && publicData.totalCount() > 0) {
                         crno = publicData.items().get(0).crno();
                     }
-                } catch (Exception exception) {
-                    log.error("Failed to retrieve public data for 사업자번호: {}. Error: {}", data.brno(), exception.getMessage(), exception);
+                } catch (Exception e) {
+                    throw new CoreException(ErrorType.PUBLIC_DATA_NOT_FOUND, e.getLocalizedMessage());
                 }
 
                 PublicAddress publicAddress = null;
@@ -62,8 +60,8 @@ public class BusinessService {
                         if (publicAddress != null && publicAddress.results().common().totalCount() > 0) {
                             admCd = publicAddress.results().juso().get(0).admCd();
                         }
-                    } catch (Exception exception) {
-                        log.error("Failed to retrieve Juso data for 주소: {}. Error: {}", addressToUse, exception.getMessage(), exception);
+                    } catch (Exception e) {
+                        throw new CoreException(ErrorType.JUSO_DATA_NOT_FOUND, e.getLocalizedMessage());
                     }
                 }
 

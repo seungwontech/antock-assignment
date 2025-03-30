@@ -1,17 +1,21 @@
 package com.example.antockassignment.api;
 
+import com.example.antockassignment.config.exception.CoreException;
+import com.example.antockassignment.config.exception.ErrorType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.netty.channel.ChannelOption;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import reactor.netty.http.client.HttpClient;
 
+import java.io.IOException;
 import java.time.Duration;
 
-
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class ApiClient {
@@ -20,7 +24,6 @@ public class ApiClient {
     private final WebClient.Builder webClientBuilder;
 
     public <T> T get(String urlString, Class<T> responseType) throws Exception {
-        System.out.println(urlString);
         DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(urlString);
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
 
@@ -39,6 +42,10 @@ public class ApiClient {
                 .bodyToMono(String.class)
                 .block();
 
-        return objectMapper.readValue(response, responseType);
+        try {
+            return objectMapper.readValue(response, responseType);
+        } catch (IOException e) {
+            throw new CoreException(ErrorType.API_RESPONSE_FAILED, e.getLocalizedMessage());
+        }
     }
 }
