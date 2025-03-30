@@ -24,7 +24,7 @@ public class BusinessService {
     private final BusinessRepository businessRepository;
 
     @Transactional
-    public void create(List<CSVData> csvDatas) throws IOException {
+    public void create(List<CSVData> csvDatas) throws Exception {
         List<Business> businesses = new ArrayList<>();
         for (CSVData data : csvDatas) {
 

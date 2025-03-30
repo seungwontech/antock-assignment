@@ -1,6 +1,7 @@
 package com.example.antockassignment.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -9,12 +10,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@RequiredArgsConstructor
 @Component
 public class HttpApiClient {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public <T> T sendGetRequest(String urlString, Class<T> responseType) throws IOException {
+    public <T> T get(String urlString, Class<T> responseType) throws Exception {
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(5000);
@@ -23,18 +25,16 @@ public class HttpApiClient {
         conn.setRequestProperty("Content-type", "application/json");
 
         int responseCode = conn.getResponseCode();
-        BufferedReader br = (responseCode >= 200 && responseCode <= 300)
-                ? new BufferedReader(new InputStreamReader(conn.getInputStream()))
-                : new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-
-        StringBuilder response = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) {
-            response.append(line);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(
+                responseCode >= 200 && responseCode <= 300 ? conn.getInputStream() : conn.getErrorStream()))) {
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+            }
+            return objectMapper.readValue(response.toString(), responseType);
+        } finally {
+            conn.disconnect();
         }
-        br.close();
-        conn.disconnect();
-
-        return objectMapper.readValue(response.toString(), responseType);
     }
 }

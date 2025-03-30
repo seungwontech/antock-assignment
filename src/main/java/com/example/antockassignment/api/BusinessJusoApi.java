@@ -21,12 +21,12 @@ public class BusinessJusoApi {
 
     private final HttpApiClient httpApiClient;
 
-    public PublicAddress getBusinessJusoData(String keyword) throws IOException {
+    public PublicAddress getBusinessJusoData(String keyword) throws Exception {
         String url = BASE_URL + "1&countPerPage=1"
                 + "&keyword=" + URLEncoder.encode(keyword, "UTF-8")
                 + "&confmKey=" + API_KEY
                 + "&resultType=json";
 
-        return httpApiClient.sendGetRequest(url, PublicAddress.class);
+        return httpApiClient.get(url, PublicAddress.class);
     }
 }

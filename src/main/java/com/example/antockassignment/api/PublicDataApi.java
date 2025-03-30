@@ -19,11 +19,11 @@ public class PublicDataApi {
 
     private final HttpApiClient httpApiClient;
 
-    public PublicData getPublicData(String brno) throws IOException {
+    public PublicData getPublicData(String brno) throws Exception {
         String url = BASE_URL
                 + "?serviceKey=" + URLEncoder.encode(API_KEY, "UTF-8")
                 + "&pageNo=1&numOfRows=1&resultType=json&brno=" + brno;
 
-        return httpApiClient.sendGetRequest(url, PublicData.class);
+        return httpApiClient.get(url, PublicData.class);
     }
 }

@@ -29,7 +29,7 @@ public class BusinessController {
 
 
     @PostMapping("/csv-data")
-    public ResponseEntity<Void> getCSVData(@RequestBody CityDistrictRequest request) throws IOException, InterruptedException {
+    public ResponseEntity<Void> getCSVData(@RequestBody CityDistrictRequest request) throws Exception {
         String csvContent = csvDownload.download(request.city(), request.district());
         List<CSVData> csvDatas = CsvToJsonConverter.convertCsvToList(csvContent);
 
